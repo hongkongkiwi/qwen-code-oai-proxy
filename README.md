@@ -287,6 +287,57 @@ To use with crush, add the following to `~/.config/crush/crush.json`:
 
 
 
+## Testing
+
+The proxy includes a comprehensive test suite to verify all features are working correctly.
+
+### Running Tests
+
+Run all tests:
+```bash
+npm run test:comprehensive
+```
+
+Run individual test suites:
+```bash
+npm run test:multimodal    # Test multimodal input support
+npm run test:models         # Test models endpoint
+npm run test:streaming      # Test enhanced streaming
+npm run test:rate-limits    # Test rate limit headers
+npm run test:errors         # Test error handling
+```
+
+### Test Coverage
+
+The test suite covers:
+- **Multimodal Support**: Image and video input validation
+- **Models Endpoint**: Dynamic model listing with enhanced metadata
+- **Streaming**: Custom stream options and enhanced streaming
+- **Rate Limiting**: Proper pass-through of rate limit headers
+- **Error Handling**: Comprehensive error mapping and validation
+
+## Advanced Features
+
+### Multimodal Support
+The proxy supports multimodal inputs for vision-language models:
+- Image inputs via data URLs or HTTP/HTTPS URLs
+- Video inputs for compatible models
+- Configurable detail levels (low, high, auto)
+
+### Rate Limit Headers
+The proxy automatically passes through rate limit headers from the Qwen API, allowing clients to track:
+- Request limits and remaining quota
+- Token limits and usage
+- Reset times for rate limits
+
+### Enhanced Error Handling
+All Qwen API errors are properly mapped to OpenAI-compatible error types:
+- Authentication errors
+- Rate limit errors
+- Context length errors
+- Invalid request errors
+- Quota exceeded errors
+
 ## Token Counting
 
 The proxy now displays token counts in the terminal for each request, showing both input tokens and API-returned usage statistics (prompt, completion, and total tokens).
