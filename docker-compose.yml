@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   qwen-proxy:
-    build: .
+    image: ghcr.io/hongkongkiwi/qwen-code-oai-proxy:latest
+    # Uncomment the line below and comment the line above to build locally
+    # build: .
     ports:
       - "8080:8080"
     environment:
