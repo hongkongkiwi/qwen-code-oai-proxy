@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  qwen-proxy:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - LOG_FILE_LIMIT=20
+      - DEBUG_LOG=false
+      - STREAM=true
+      - FAKE_API_KEY=${FAKE_API_KEY:-}
+    volumes:
+      - ~/.qwen:/root/.qwen:ro
+      - ./logs:/app/logs
+    restart: unless-stopped

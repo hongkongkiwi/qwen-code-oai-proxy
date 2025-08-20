@@ -28,6 +28,9 @@ module.exports = {
   // Default account to use first (if available)
   defaultAccount: process.env.DEFAULT_ACCOUNT || '',
   
+  // API key authentication
+  apiKey: process.env.FAKE_API_KEY || '',
+  
   // Debug logging configuration
   debugLog: process.env.DEBUG_LOG === 'true' ? true : false, // Enable/disable debug logging (disabled by default)
   logFileLimit: parseInt(process.env.LOG_FILE_LIMIT) || 20 // Maximum number of log files to keep

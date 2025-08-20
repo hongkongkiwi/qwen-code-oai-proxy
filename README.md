@@ -79,12 +79,17 @@ The proxy server can be configured using environment variables. Create a `.env` 
 *   `DEBUG_LOG`: Set to `true` to enable debug logging (default: false)
 *   `STREAM`: Set to `true` to enable streaming responses (default: false)
     *   **Important**: Set this to `true` when using tools like opencode or crush that require streaming responses
+*   `FAKE_API_KEY`: Set a custom API key for authentication (leave empty to allow any API key/disable authentication)
+    *   **Security**: Use this when exposing the proxy to the internet to prevent unauthorized access
 *   `DEFAULT_ACCOUNT`: Specify which account the proxy should use by default (when using multi-account setup)
     *   Should match the name used when adding an account with `npm run auth add <name>`
     *   If not set or invalid, the proxy will use the first available account
 
 Example `.env` file:
 ```bash
+# API Key for authentication (leave empty to allow any API key)
+FAKE_API_KEY=your-secret-api-key-here
+
 # Keep only the 10 most recent log files
 LOG_FILE_LIMIT=10
 
@@ -106,7 +111,7 @@ DEFAULT_ACCOUNT=my-primary-account
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  apiKey: 'fake-key', // Not used, but required by the OpenAI client
+  apiKey: 'your-secret-api-key-here', // Use your FAKE_API_KEY value, or any value if authentication is disabled
   baseURL: 'http://localhost:8080/v1'
 });
 

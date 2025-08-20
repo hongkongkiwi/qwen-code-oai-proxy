@@ -12,6 +12,36 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cors());
 
+// API key authentication middleware
+function authenticateApiKey(req, res, next) {
+  // Skip authentication if no API key is configured
+  if (!config.apiKey) {
+    return next();
+  }
+
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({
+      error: {
+        message: 'Missing or invalid authorization header',
+        type: 'authentication_error'
+      }
+    });
+  }
+
+  const token = authHeader.substring(7); // Remove 'Bearer ' prefix
+  if (token !== config.apiKey) {
+    return res.status(401).json({
+      error: {
+        message: 'Invalid API key',
+        type: 'authentication_error'
+      }
+    });
+  }
+
+  next();
+}
+
 // Initialize Qwen API client
 const qwenAPI = new QwenAPI();
 const authManager = new QwenAuthManager();
@@ -306,8 +336,8 @@ class QwenOpenAIProxy {
 const proxy = new QwenOpenAIProxy();
 
 // Routes
-app.post('/v1/chat/completions', (req, res) => proxy.handleChatCompletion(req, res));
-app.get('/v1/models', (req, res) => proxy.handleModels(req, res));
+app.post('/v1/chat/completions', authenticateApiKey, (req, res) => proxy.handleChatCompletion(req, res));
+app.get('/v1/models', authenticateApiKey, (req, res) => proxy.handleModels(req, res));
 
 // Authentication routes
 app.post('/auth/initiate', (req, res) => proxy.handleAuthInitiate(req, res));
