@@ -128,6 +128,14 @@ class QwenOpenAIProxy {
         console.log('\x1b[32m%s\x1b[0m', `Chat completion request processed successfully${tokenInfo}.`);
       }
       
+      // Set rate limit headers from Qwen API response
+      if (response._rateLimitHeaders) {
+        Object.entries(response._rateLimitHeaders).forEach(([key, value]) => {
+          res.setHeader(key, value);
+        });
+        delete response._rateLimitHeaders; // Clean up internal property
+      }
+      
       res.json(response);
     } catch (error) {
       throw error; // Re-throw to be handled by the main handler
@@ -151,6 +159,7 @@ class QwenOpenAIProxy {
         temperature: req.body.temperature,
         max_tokens: req.body.max_tokens,
         top_p: req.body.top_p,
+        stream_options: req.body.stream_options,
       });
       
       // Log the API call (without response data since it's streaming)
