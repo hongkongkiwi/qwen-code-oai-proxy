@@ -284,6 +284,59 @@ To use with crush, add the following to `~/.config/crush/crush.json`:
 }
 ```
 
+### Octofriend Configuration
+
+To use with Octofriend, add the following configuration:
+
+```json
+{
+  "providers": [
+    {
+      "id": "qwen-proxy",
+      "name": "Qwen via Proxy",
+      "type": "openai-compatible",
+      "config": {
+        "baseURL": "http://localhost:8080/v1",
+        "apiKey": "any-key-here"
+      },
+      "models": [
+        {
+          "id": "qwen3-coder-plus",
+          "name": "Qwen3 Coder Plus",
+          "contextWindow": 150000,
+          "maxTokens": 64000,
+          "supportsFunctions": true,
+          "supportsStreaming": true
+        },
+        {
+          "id": "qwen3-coder-turbo", 
+          "name": "Qwen3 Coder Turbo",
+          "contextWindow": 150000,
+          "maxTokens": 64000,
+          "supportsFunctions": true,
+          "supportsStreaming": true
+        },
+        {
+          "id": "qwen-vl-plus",
+          "name": "Qwen VL Plus",
+          "contextWindow": 32768,
+          "maxTokens": 8192,
+          "supportsFunctions": true,
+          "supportsStreaming": true,
+          "supportsImages": true,
+          "supportsVideo": true
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Note**: 
+- Octofriend requires streaming to be enabled. Set `STREAM=true` in your `.env` file.
+- If you have set a `FAKE_API_KEY` in your proxy configuration, use that value in the `apiKey` field.
+- The proxy supports tool calling, so `supportsFunctions` is set to `true` for all models.
+
 
 
 
