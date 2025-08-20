@@ -26,6 +26,65 @@ Users might face errors or 504 Gateway Timeout issues when using contexts with 1
 
 5. API key ? Random doesn't matter .
 
+## Docker Compose
+
+You can run the proxy server using Docker Compose for easy deployment and isolation.
+
+### Prerequisites
+
+Before using Docker Compose, you need to authenticate with Qwen locally:
+
+```bash
+npm install
+npm run auth:add <account>
+```
+
+This creates the `~/.qwen/oauth_creds.json` file that will be mounted into the container.
+
+### Running with Docker Compose
+
+1. **Start the service**:
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **View logs**:
+   ```bash
+   docker-compose logs -f
+   ```
+
+3. **Stop the service**:
+   ```bash
+   docker-compose down
+   ```
+
+### Configuration
+
+The Docker Compose configuration includes:
+- **Port mapping**: Maps container port 8080 to host port 8080
+- **Volume mounts**: 
+  - `~/.qwen` directory (read-only) for authentication credentials
+  - `./logs` directory for application logs
+- **Environment variables**: Pre-configured with recommended settings
+- **Auto-restart**: Container restarts automatically unless manually stopped
+
+### Custom Configuration
+
+To customize the Docker deployment:
+
+1. **Set API key**: Create a `.env` file in the project root:
+   ```bash
+   FAKE_API_KEY=your-secret-api-key-here
+   ```
+
+2. **Build locally**: Uncomment the `build: .` line and comment the `image:` line in `docker-compose.yml`
+
+3. **Change port**: Modify the port mapping in `docker-compose.yml`:
+   ```yaml
+   ports:
+     - "3000:8080"  # Maps host port 3000 to container port 8080
+   ```
+
 ## Multi-Account Support
 
 The proxy supports multiple Qwen accounts to overcome the 2,000 requests per day limit per account. Accounts are automatically rotated when quota limits are reached.
